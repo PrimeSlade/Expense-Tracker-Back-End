@@ -23,6 +23,7 @@ const register = async(req,res) => {
         return res.status(400).json("Password length must be over 6 or at least 6");
     }
 
+    //salt
     const salt = await bcrypt.genSalt();
     const hash = await bcrypt.hash(password,salt);
 
