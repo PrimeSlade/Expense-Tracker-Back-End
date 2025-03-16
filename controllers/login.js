@@ -14,12 +14,12 @@ const login = async(req,res)=>{
         const [user] = await knex.select('email','id').from('users').where({email:email});
         
         //if not valid send 400
-        if(!user)  return res.status(400).json("Email is invalid !!!");
+        if(!user)  return res.status(400).json({error:"Email is invalid !!!"});
         
         //check password is valid
         const [userPassword] = await knex.select('hash').from('passwords').where({user_id: user.id});
         const isValid = bcrypt.compareSync(password,userPassword.hash);
-        if(!isValid) return res.status(400).json("password is incorrect !!!");
+        if(!isValid) return res.status(400).json({error:"password is incorrect !!!"});
 
         const token = createToken(user.id);
 
