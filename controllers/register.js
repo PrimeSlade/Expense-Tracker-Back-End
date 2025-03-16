@@ -15,12 +15,12 @@ const register = async(req,res) => {
     //check if the email is valid
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if(!emailRegex.test(email)){
-        return res.status(400).json("Invalid email address!!");
+        return res.status(400).json({error: "Invalid email address!!"});
     }
 
     //check if the password len is at least 6
     if(password.length < 6){
-        return res.status(400).json("Password length must be over 6 or at least 6");
+        return res.status(400).json({error:"Password length must be over 6 or at least 6"});
     }
 
     //salt
@@ -51,7 +51,7 @@ const register = async(req,res) => {
         } catch (error) {
             await trx.rollback();
             console.log(error);
-            res.status(400).send(error.detail);
+            res.status(400).send({error : error.detail});
         }
     })
 

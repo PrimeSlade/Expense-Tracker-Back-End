@@ -30,7 +30,7 @@ const login = async(req,res)=>{
             maxAge: 3 * 24 * 60 * 60 * 1000 
         });
         
-        res.json(userPassword);
+        res.json(user);
     
     } catch (error) {
         console.log(error);
