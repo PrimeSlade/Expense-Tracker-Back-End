@@ -23,12 +23,11 @@ app.use(authRoutes);
 
 //server
 app.get('/',(req,res)=>{
-    res.send("ok");
+    //res.send("ok");
     const token = req.cookies.jwt;
     console.log(token);
+    res.json(token);
 })
-
-
 
 //server
 app.listen(PORT, ()=>{
