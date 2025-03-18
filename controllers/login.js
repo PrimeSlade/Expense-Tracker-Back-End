@@ -2,6 +2,7 @@ const knex = require('../knex/knex');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+//create token
 const createToken = (id) => {
     return jwt.sign({id} , process.env.SECRETEKEY , {expiresIn: '3d' })
 }
@@ -26,7 +27,7 @@ const login = async(req,res)=>{
         //send cookie
         res.cookie('jwt', token, { 
             httpOnly: true,
-            secure:true,
+            secure:false, 
             maxAge: 3 * 24 * 60 * 60 * 1000 
         });
         
@@ -36,7 +37,6 @@ const login = async(req,res)=>{
         console.log(error);
     }
    
-
 }
 
 module.exports = login;

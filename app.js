@@ -5,6 +5,7 @@ const express = require('express');
 const authRoutes = require('./routes/route');
 const cors = require('cors');
 const cookie = require('cookie-parser');
+const requireAuth = require('./middleware/requireAuth');
 
 //activate express
 const app = express();
@@ -13,7 +14,10 @@ const app = express();
 app.use(express.json());
 
 //cors
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173',  // Allow frontend from localhost:5173
+    credentials: true,  // Allow cookies to be sent with requests
+}));
 
 //cookie
 app.use(cookie());
@@ -21,12 +25,9 @@ app.use(cookie());
 //routes
 app.use(authRoutes);
 
-//server
-app.get('/',(req,res)=>{
-    //res.send("ok");
-    const token = req.cookies.jwt;
-    console.log(token);
-    res.json(token);
+//server VERY IMPORTANT need to change !!!
+app.get('/',requireAuth ,(req,res)=>{
+  res.json('ok');
 })
 
 //server
