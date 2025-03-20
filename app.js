@@ -5,7 +5,7 @@ const express = require('express');
 const authRoutes = require('./routes/route');
 const cors = require('cors');
 const cookie = require('cookie-parser');
-const requireAuth = require('./middleware/requireAuth');
+const operationRoute = require('./routes/operationRoutes');
 
 //activate express
 const app = express();
@@ -24,9 +24,10 @@ app.use(cookie());
 
 //routes
 app.use(authRoutes);
+app.use(operationRoute);
 
 //server VERY IMPORTANT need to change !!!
-app.get('/',requireAuth ,(req,res)=>{
+app.get('/',(req,res)=>{
   res.json('ok');
 })
 
