@@ -3,17 +3,17 @@ const create = async(req,res)=>{
 
     //get id from middleware
     const userId = req.user;
-    const {categories, note, createdAt,cost, iconName} = req.body;
+    const {categories, note, created_at,cost, icon_name} = req.body;
 
     try {
         const data = await knex('datas').insert({
             categories: categories,
             note: note,
-            created_at: createdAt,
+            created_at: created_at,
             cost: cost,
             user_id:userId,
-            icon_name: iconName
-        }).returning('*');
+            icon_name: icon_name
+        }).returning(['id','categories','note','created_at','cost','icon_name']);
 
         res.json(data);
     } catch (error) {
