@@ -1,9 +1,15 @@
 const { json } = require('express');
 const knex = require('../knex/knex');
 const deleteList = async(req,res) => {
+    
+    //get id from middleware
+    const user_id = req.user;
     const {id} = req.body;
     try {
-        const data = await knex('datas').where({id: id}).del();
+        const data = await knex('datas').where({
+            id: id ,
+            user_id: user_id
+        }).del();
         res.status(200).json("successfully deleted");
     } catch (error) {
         console.error(error);
