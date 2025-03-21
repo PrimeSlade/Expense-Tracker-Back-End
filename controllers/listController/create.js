@@ -1,9 +1,9 @@
-const knex = require('../knex/knex');
+const knex = require('../../knex/knex');
 const create = async(req,res)=>{
 
     //get id from middleware
     const user_id = req.user;
-    
+
     const {categories, note, created_at,cost, icon_name} = req.body;
 
     try {

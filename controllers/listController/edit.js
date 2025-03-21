@@ -1,9 +1,9 @@
-const knex = require('../knex/knex');
+const knex = require('../../knex/knex');
 const edit = async(req,res)=>{
 
     const user_id = req.user;
     const {id,categories,note,created_at,cost,icon_name} = req.body;
-
+    
     try {
         const [data] = await knex('datas').where({user_id: user_id, id:id})
         .update({

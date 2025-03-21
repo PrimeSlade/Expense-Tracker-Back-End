@@ -1,4 +1,4 @@
-const knex = require('../knex/knex');
+const knex = require('../../knex/knex');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid'); // uuid 
 

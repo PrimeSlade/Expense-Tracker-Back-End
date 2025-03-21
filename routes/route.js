@@ -1,7 +1,7 @@
 const {Router} = require('express');
-const register = require('../controllers/register');
-const login = require('../controllers/login');
-const logout = require('../controllers/logout');
+const register = require('../controllers/authController/register');
+const login = require('../controllers/authController/login');
+const logout = require('../controllers/authController/logout');
 
 //activate route
 const route = Router();

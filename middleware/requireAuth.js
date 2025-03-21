@@ -13,6 +13,7 @@ const requireAuth =  async(req,res,next) => {
         const {id} = json.verify(token,process.env.SECRETEKEY);
         
         const [user] = await knex.select('id').from('users').where({id: id});
+        
         //store in the req.user
         req.user = user.id;  
         
