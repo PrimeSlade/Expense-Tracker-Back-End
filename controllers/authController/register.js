@@ -4,10 +4,10 @@ const { v4: uuidv4 } = require('uuid'); // uuid
 
 //register
 const register = async(req,res) => {
-    const {name,email,password,currency} = req.body;
+    const {name,email,password,currency,amount} = req.body;
 
     //Checking if the email, name and password are empty or not!
-    if(!name || !email ||!password ||!currency){
+    if(!name || !email ||!password ||!currency ||!amount){
         res.json("Could not register !!!");
         return;
     }
@@ -36,7 +36,7 @@ const register = async(req,res) => {
                 name: name,
                 email: email,
                 joined: new Date(),
-                amount: 0,
+                amount: amount,
                 currency: currency
             }).returning('id');
             
