@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 module.exports.info = async(req,res)=> {
     const user_id = req.user;
 
-    const {name, email, amount,currency} =  req.body;
+    const {name, email, amount} =  req.body;
 
     //test whether the email is valid or not
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -23,7 +23,6 @@ module.exports.info = async(req,res)=> {
             name:name,
             email:email,
             amount:amount ? newAmount + prevAmount : prevAmount,
-            currency:currency
         }).returning(['name','email','amount','currency']);
 
         if(user){
