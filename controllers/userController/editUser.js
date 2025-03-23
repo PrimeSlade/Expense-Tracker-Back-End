@@ -1,10 +1,10 @@
-const knex = require('../../knex/knex');
+const knex = require('../../knex/knex.js');
 const bcrypt = require('bcrypt');
 
 module.exports.info = async(req,res)=> {
     const user_id = req.user;
 
-    const {name, email, amount} =  req.body;
+    const {name, email} =  req.body;
 
     //test whether the email is valid or not
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -13,16 +13,10 @@ module.exports.info = async(req,res)=> {
         return res.status(400).json({error: "Invalid email address!!"});  
     }
   
-    //need to add change curr
-    const [data] = await knex.select('amount').where({id:user_id}).from('users');
-    const newAmount = Number(amount);
-    const prevAmount = Number(data.amount);
-    
     try {
         const [user] = await knex('users').where({id: user_id}).update({
             name:name,
             email:email,
-            amount:amount ? newAmount + prevAmount : prevAmount,
         }).returning(['name','email','amount','currency']);
 
         if(user){

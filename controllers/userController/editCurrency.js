@@ -1,5 +1,6 @@
-const knex = require('../../knex/knex');
+const knex = require('../../knex/knex.js');
 const API_KEY = process.env.API_KEY;
+const amountSelector = require('../../utils/amountSelector.js');
 
 //for converting
 const convert = (prevAmount,rate) => {
@@ -14,7 +15,7 @@ const editCurrency = async(req,res)=>{
     try {
         //select currency
         const [{currency}] = await knex.select('currency').from('users').where({id: user_id});
-        
+
         //fetch currency api
         const response = await fetch(`https://v6.exchangerate-api.com/v6/${API_KEY}/latest/${currency}`);
         const {conversion_rates} = await response.json();
@@ -22,11 +23,11 @@ const editCurrency = async(req,res)=>{
         //getting costs from datas
         const list = await knex.select(['id','cost']).where({user_id:user_id}).from('datas');
 
+        const prevAmount = await amountSelector(user_id);
+
         knex.transaction(async trx =>{
             try {
-                //updating user 
-                const [{amount}] = await trx.select('amount').where({id:user_id}).from('users');
-                const prevAmount = Number(amount); //Number
+                //updating user
                 const newAmount = convert(prevAmount,conversion_rates[newCurrency]);
                
                 await trx('users').where({id:user_id}).update({

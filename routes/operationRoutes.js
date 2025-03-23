@@ -6,6 +6,7 @@ const edit = require('../controllers/listController/edit');
 const editUser = require('../controllers/userController/editUser');
 const displayLists = require('../controllers/listController/displayLists');
 const editCurrency = require('../controllers/userController/editCurrency');
+const addAmount = require('../controllers/userController/addAmount');
 
 const operationRoute = Router();
 
@@ -19,6 +20,6 @@ operationRoute.put('/editUser',editUser.info);
 operationRoute.put('/editPassword',editUser.password);
 operationRoute.get('/list',displayLists);
 operationRoute.put('/currency',editCurrency);
-
+operationRoute.put('/addAmount',addAmount);
 
 module.exports = operationRoute;
