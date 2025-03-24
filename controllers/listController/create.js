@@ -16,7 +16,7 @@ const create = async(req,res)=>{
         return;
     }
 
-    knex.transaction(async trx => {g
+    knex.transaction(async trx => {
         try {
 
             await trx('users').where({id:user_id}).update({

@@ -7,7 +7,6 @@ const deleteList = async(req,res) => {
     const user_id = req.user;
     const id = parseInt(req.params.id);
    
-    //TODO: need to work on this 
     const prevAmount = await amountSelector(user_id);
  
     knex.transaction(async trx => {
@@ -17,8 +16,6 @@ const deleteList = async(req,res) => {
                 id: id ,
                 user_id: user_id
             }).del().returning('cost');
-
-            console.log(cost);
 
             await trx('users').where({id:user_id}).update({
                 amount: prevAmount + Number(cost)
@@ -35,7 +32,6 @@ const deleteList = async(req,res) => {
             json.status(400).json({error: "Could not delete a list"});
         }
     })
-    
 }
 
 module.exports = deleteList;

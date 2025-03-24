@@ -2,9 +2,11 @@ const knex = require('../../knex/knex.js');
 const edit = async(req,res)=>{
 
     const user_id = req.user;
-    const {id,categories,note,created_at,cost,icon_name} = req.body;
+    const {categories,note,created_at,cost,icon_name} = req.body;
+    const id = parseInt(req.params.id);
 
     //TODO: need to work on costs
+    
     
     
     try {
