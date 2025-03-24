@@ -5,6 +5,8 @@ const deleteList = async(req,res) => {
     const user_id = req.user;
     const {id} = req.body;
 
+    //need to work on this VERY IMPORTANT
+
     try {
         const data = await knex('datas').where({
             id: id ,
