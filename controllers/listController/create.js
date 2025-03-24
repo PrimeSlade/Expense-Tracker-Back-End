@@ -1,5 +1,6 @@
 const knex = require("../../knex/knex");
 const amountSelector = require("../../utils/amountSelector");
+const upadateAmount = require("../../utils/upadateAmount");
 
 const create = async (req, res) => {
   //get id from middleware
@@ -18,12 +19,7 @@ const create = async (req, res) => {
 
   knex.transaction(async (trx) => {
     try {
-      //upadate amount
-      await trx("users")
-        .where({ id: user_id })
-        .update({
-          amount: amount - cost,
-        });
+      await upadateAmount(user_id, amount - cost, trx);
 
       //create new list
       const [data] = await trx("datas")
