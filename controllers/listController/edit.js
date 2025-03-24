@@ -1,5 +1,6 @@
 const knex = require("../../knex/knex.js");
 const amountSelector = require("../../utils/amountSelector.js");
+const upadateAmount = require("../../utils/upadateAmount.js");
 
 const calcNewAmount = (cost, prevAmount, newCost) => {
   return Number(cost) + prevAmount - newCost;
@@ -40,9 +41,7 @@ const edit = async (req, res) => {
       //if the user changes cost
       if (newCost) {
         const newAmount = calcNewAmount(cost, prevAmount, newCost);
-        await knex("users")
-          .update({ amount: newAmount })
-          .where({ id: user_id });
+        await upadateAmount(user_id, newAmount, trx);
       }
 
       await trx.commit();
