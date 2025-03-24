@@ -1,11 +1,11 @@
-require('dotenv').config();  // For the dotenv package, not dotenvx
+require("dotenv").config(); // For the dotenv package, not dotenvx
 
-const PORT = process.env.PORT; 
-const express = require('express');
-const authRoutes = require('./routes/route');
-const cors = require('cors');
-const cookie = require('cookie-parser');
-const operationRoute = require('./routes/operationRoutes');
+const PORT = process.env.PORT;
+const express = require("express");
+const authRoutes = require("./routes/route");
+const cors = require("cors");
+const cookie = require("cookie-parser");
+const operationRoute = require("./routes/operationRoutes");
 
 //activate express
 const app = express();
@@ -14,10 +14,12 @@ const app = express();
 app.use(express.json());
 
 //cors
-app.use(cors({
-    origin: 'http://localhost:5173',  // Allow frontend from localhost:5173
-    credentials: true,  // Allow cookies to be sent with requests
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Allow frontend from localhost:5173
+    credentials: true, // Allow cookies to be sent with requests
+  })
+);
 
 //cookie
 app.use(cookie());
@@ -27,11 +29,11 @@ app.use(authRoutes);
 app.use(operationRoute);
 
 //server VERY IMPORTANT need to change !!!
-app.get('/',(req,res)=>{
-  res.json('ok');
-})
+app.get("/", (req, res) => {
+  res.json("ok");
+});
 
 //server
-app.listen(PORT, ()=>{
-    console.log("server is running on port " + PORT);
-})
+app.listen(PORT, () => {
+  console.log("server is running on port " + PORT);
+});
