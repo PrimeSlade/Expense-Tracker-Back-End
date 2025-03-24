@@ -7,6 +7,7 @@ const create = async (req, res) => {
 
   const { categories, note, created_at, cost, icon_name } = req.body;
 
+  //get amount from db
   const amount = await amountSelector(user_id);
 
   //check whether the amount is greater than or not
@@ -17,12 +18,14 @@ const create = async (req, res) => {
 
   knex.transaction(async (trx) => {
     try {
+      //upadate amount
       await trx("users")
         .where({ id: user_id })
         .update({
           amount: amount - cost,
         });
 
+      //create new list
       const [data] = await trx("datas")
         .insert({
           categories: categories,

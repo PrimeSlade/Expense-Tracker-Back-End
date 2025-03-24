@@ -2,14 +2,17 @@ const knex = require("../../knex/knex");
 const amountSelector = require("../../utils/amountSelector");
 
 const deleteList = async (req, res) => {
-  //get id from middleware
+  //get user id from middleware
   const user_id = req.user;
+  //get id from params
   const id = parseInt(req.params.id);
 
+  //get amount from db
   const prevAmount = await amountSelector(user_id);
 
   knex.transaction(async (trx) => {
     try {
+      //del from datas
       const [{ cost }] = await trx("datas")
         .where({
           id: id,
@@ -18,6 +21,7 @@ const deleteList = async (req, res) => {
         .del()
         .returning("cost");
 
+      //upadate amount
       await trx("users")
         .where({ id: user_id })
         .update({

@@ -37,8 +37,13 @@ const edit = async (req, res) => {
           "icon_name",
         ]);
 
-      const newAmount = calcNewAmount(cost, prevAmount, newCost);
-      await knex("users").update({ amount: newAmount }).where({ id: user_id });
+      //if the user changes cost
+      if (newCost) {
+        const newAmount = calcNewAmount(cost, prevAmount, newCost);
+        await knex("users")
+          .update({ amount: newAmount })
+          .where({ id: user_id });
+      }
 
       await trx.commit();
 
