@@ -15,11 +15,11 @@ operationRoute.use(requireAuth);
 
 operationRoute.post('/create',create);
 operationRoute.delete('/lists/:id',deleteList);
-operationRoute.put('/edit/:id',edit);
-operationRoute.put('/editUser',editUser.info);
-operationRoute.put('/editPassword',editUser.password);
+operationRoute.put('/lists/:id',edit);
+operationRoute.put('/user',editUser.info);
+operationRoute.put('/password',editUser.password);
 operationRoute.get('/lists',displayLists);
 operationRoute.patch('/currency',editCurrency);
-operationRoute.patch('/addAmount',addAmount);
+operationRoute.patch('/amount',addAmount);
 
 module.exports = operationRoute;
