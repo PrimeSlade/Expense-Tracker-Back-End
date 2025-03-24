@@ -1,5 +1,6 @@
 const knex = require("../../knex/knex.js");
 const amountSelector = require("../../utils/amountSelector");
+const upadateAmount = require("../../utils/upadateAmount.js");
 
 const addAmount = async (req, res) => {
   //need to add change curr
@@ -7,15 +8,10 @@ const addAmount = async (req, res) => {
   const { amount } = req.body;
   const newAmount = Number(amount);
 
-  const prevAmount = await amountSelector(user_id);
-
   try {
-    const [user] = await knex("users")
-      .where({ id: user_id })
-      .update({
-        amount: newAmount + prevAmount,
-      })
-      .returning(["name", "email", "amount", "currency"]);
+    const prevAmount = await amountSelector(user_id);
+
+    const user = await upadateAmount(user_id, newAmount + prevAmount, knex);
 
     res.status(200).json(user);
   } catch (error) {

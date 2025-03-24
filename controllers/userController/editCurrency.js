@@ -1,6 +1,7 @@
 const knex = require("../../knex/knex.js");
 const API_KEY = process.env.API_KEY;
 const amountSelector = require("../../utils/amountSelector.js");
+const upadateAmount = require("../../utils/upadateAmount.js");
 
 //for converting
 const convert = (prevAmount, rate) => {
@@ -37,10 +38,7 @@ const editCurrency = async (req, res) => {
         //updating user
         const newAmount = convert(prevAmount, conversion_rates[newCurrency]);
 
-        await trx("users").where({ id: user_id }).update({
-          currency: newCurrency,
-          amount: newAmount,
-        });
+        await upadateAmount(user_id, newAmount, trx, newCurrency);
 
         //updating datas
         await Promise.all(
