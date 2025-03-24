@@ -14,11 +14,11 @@ const operationRoute = Router();
 operationRoute.use(requireAuth);
 
 operationRoute.post('/create',create);
-operationRoute.delete('/delete',deleteList);
+operationRoute.delete('/lists/:id',deleteList);
 operationRoute.put('/edit',edit);
 operationRoute.put('/editUser',editUser.info);
 operationRoute.put('/editPassword',editUser.password);
-operationRoute.get('/list',displayLists);
+operationRoute.get('/lists',displayLists);
 operationRoute.put('/currency',editCurrency);
 operationRoute.put('/addAmount',addAmount);
 

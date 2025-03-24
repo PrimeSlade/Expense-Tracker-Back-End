@@ -8,16 +8,15 @@ const create = async(req,res)=>{
 
     const {categories, note, created_at,cost, icon_name} = req.body;
 
-    //VERY IMPORTANT need to work on this
     const amount = await amountSelector(user_id);
     
-     //check whether the amount is greater than or not
+    //check whether the amount is greater than or not
     if(amount < cost){
         res.status(400).json({error: "insufficient amount"});
         return;
     }
 
-    knex.transaction(async trx => {
+    knex.transaction(async trx => {g
         try {
 
             await trx('users').where({id:user_id}).update({

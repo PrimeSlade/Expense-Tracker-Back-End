@@ -4,7 +4,7 @@ const edit = async(req,res)=>{
     const user_id = req.user;
     const {id,categories,note,created_at,cost,icon_name} = req.body;
 
-    //need to work on costs VERY IMPORTANT 
+    //TODO: need to work on costs
     
     
     try {
