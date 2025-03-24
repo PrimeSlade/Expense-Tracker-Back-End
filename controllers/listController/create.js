@@ -1,4 +1,6 @@
 const knex = require('../../knex/knex');
+const amountSelector = require('../../utils/amountSelector');
+
 const create = async(req,res)=>{
 
     //get id from middleware
@@ -7,7 +9,7 @@ const create = async(req,res)=>{
     const {categories, note, created_at,cost, icon_name} = req.body;
 
     //VERY IMPORTANT need to work on this
-    const [{amount}] = await knex.select('amount').where({id:user_id}).from('users');
+    const amount = await amountSelector(user_id);
     
      //check whether the amount is greater than or not
     if(amount < cost){
@@ -40,7 +42,6 @@ const create = async(req,res)=>{
             res.status(400).json({error: "could not create a new list"})
         }
     })
-
 }
 
 module.exports = create;

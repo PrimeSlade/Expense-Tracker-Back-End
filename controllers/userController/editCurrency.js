@@ -4,7 +4,7 @@ const amountSelector = require('../../utils/amountSelector.js');
 
 //for converting
 const convert = (prevAmount,rate) => {
-    return Math.round(prevAmount * rate);
+    return Math.round(prevAmount * rate); //need to check later VERY IMPORTANT
 }
 
 const editCurrency = async(req,res)=>{
