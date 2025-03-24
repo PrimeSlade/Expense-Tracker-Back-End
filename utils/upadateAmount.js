@@ -1,9 +1,10 @@
-const upadateAmount = async (user_id, amount, knex) => {
+const upadateAmount = async (user_id, amount, knex, currency) => {
   try {
     const [user] = await knex("users")
       .where({ id: user_id })
       .update({
         amount: amount,
+        currency: currency,
       })
       .returning(["name", "email", "amount", "currency"]);
 
