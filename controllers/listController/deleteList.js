@@ -1,5 +1,6 @@
 const knex = require("../../knex/knex");
 const amountSelector = require("../../utils/amountSelector");
+const upadateAmount = require("../../utils/upadateAmount");
 
 const deleteList = async (req, res) => {
   //get user id from middleware
@@ -22,11 +23,7 @@ const deleteList = async (req, res) => {
         .returning("cost");
 
       //upadate amount
-      await trx("users")
-        .where({ id: user_id })
-        .update({
-          amount: prevAmount + Number(cost),
-        });
+      await upadateAmount(user_id, prevAmount + Number(cost), trx);
 
       await trx.commit();
 
