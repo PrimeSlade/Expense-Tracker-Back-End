@@ -31,10 +31,11 @@ const editCurrency = async (req, res) => {
       .where({ user_id: user_id })
       .from("datas");
 
-    const prevAmount = await amountSelector(user_id);
-
     knex.transaction(async (trx) => {
       try {
+        //get amount from db
+        const prevAmount = await amountSelector(user_id, trx);
+
         //updating user
         const newAmount = convert(prevAmount, conversion_rates[newCurrency]);
 
