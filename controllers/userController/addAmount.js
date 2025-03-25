@@ -8,16 +8,21 @@ const addAmount = async (req, res) => {
   const { amount } = req.body;
   const newAmount = Number(amount);
 
-  try {
-    const prevAmount = await amountSelector(user_id);
+  knex.transaction(async (trx) => {
+    try {
+      const prevAmount = await amountSelector(user_id, trx);
 
-    const user = await upadateAmount(user_id, newAmount + prevAmount, knex);
+      const user = await upadateAmount(user_id, newAmount + prevAmount, trx);
 
-    res.status(200).json(user);
-  } catch (error) {
-    console.error(error);
-    res.status(400).json({ error: "Could not add an amount" });
-  }
+      await trx.commit();
+
+      res.status(200).json(user);
+    } catch (error) {
+      await trx.rollback();
+      console.error(error);
+      res.status(400).json({ error: "Could not add an amount" });
+    }
+  });
 };
 
 module.exports = addAmount;

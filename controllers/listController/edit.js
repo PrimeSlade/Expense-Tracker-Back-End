@@ -11,7 +11,14 @@ const edit = async (req, res) => {
   const { categories, note, created_at, newCost, icon_name } = req.body;
   const id = parseInt(req.params.id);
 
-  const prevAmount = await amountSelector(user_id);
+  //get amount from db
+  const prevAmount = await amountSelector(user_id, knex);
+
+  //check whether the amount is greater than or not
+  if (prevAmount < newCost) {
+    res.status(400).json({ error: "insufficient amount" });
+    return;
+  }
 
   knex.transaction(async (trx) => {
     try {
