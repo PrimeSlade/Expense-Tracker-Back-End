@@ -8,11 +8,10 @@ const deleteList = async (req, res) => {
   //get id from params
   const id = parseInt(req.params.id);
 
-  //get amount from db
-  const prevAmount = await amountSelector(user_id);
-
   knex.transaction(async (trx) => {
     try {
+      //get amount from db
+      const prevAmount = await amountSelector(user_id, trx);
       //del from datas
       const [{ cost }] = await trx("datas")
         .where({
