@@ -9,7 +9,7 @@ const create = async (req, res) => {
   const { categories, note, created_at, cost, icon_name } = req.body;
 
   //get amount from db
-  const amount = await amountSelector(user_id);
+  const amount = await amountSelector(user_id, knex);
 
   //check whether the amount is greater than or not
   if (amount < cost) {

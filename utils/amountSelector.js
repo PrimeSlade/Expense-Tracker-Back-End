@@ -1,6 +1,4 @@
-const knex = require("../knex/knex.js");
-
-const amountSelector = async (user_id) => {
+const amountSelector = async (user_id, knex) => {
   try {
     const [{ amount }] = await knex
       .select("amount")
