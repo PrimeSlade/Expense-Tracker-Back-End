@@ -20,6 +20,7 @@ const uploadHandler = async (req, res) => {
       .from("users")
       .where({ id: id });
 
+    //if exists
     if (img.public_id) {
       await cloudinary.uploader.destroy(img.public_id);
       console.log("deleted");

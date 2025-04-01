@@ -4,10 +4,10 @@ const { v4: uuidv4 } = require("uuid"); // uuid
 
 //register
 const register = async (req, res) => {
-  const { name, email, password, amount } = req.body;
+  const { name, email, password } = req.body;
 
   //Checking if the email, name and password are empty or not!
-  if (!name || !email || !password || !amount) {
+  if (!name || !email || !password) {
     res.json("Could not register !!!");
     return;
   }
@@ -33,31 +33,33 @@ const register = async (req, res) => {
   knex.transaction(async (trx) => {
     try {
       //insert into users
-      const [user] = await trx("users")
+      const [{ id }] = await trx("users")
         .insert({
           id: uuidv4(),
           name: name,
           email: email,
           joined: new Date(),
-          amount: amount,
+          amount: 0,
           currency: "THB",
           img_url:
             "https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg",
         })
         .returning("id");
 
+      console.log(id);
+
       // //insert into passwords
       const password = await trx("passwords").insert({
         hash: hash,
-        user_id: user.id,
+        user_id: id,
       });
 
       await trx.commit();
-      res.status(201).json(user);
+      res.status(201).json(id);
     } catch (error) {
       await trx.rollback();
       console.log(error);
-      res.status(400).send({ error: error.detail });
+      res.status(400).json({ error: error.detail });
     }
   });
 };
