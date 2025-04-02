@@ -13,7 +13,7 @@ const login = async (req, res) => {
   try {
     //find email in the database
     const [user] = await knex
-      .select("email", "id", "img_url")
+      .select("email", "id", "img_url", "name")
       .from("users")
       .where({ email: email });
 
