@@ -1,9 +1,14 @@
 const knex = require("../../knex/knex.js");
 const amountSelector = require("../../utils/amountSelector.js");
 const upadateAmount = require("../../utils/upadateAmount.js");
+const typeSelector = require("../../utils/typeSelector.js");
 
-const calcNewAmount = (cost, prevAmount, newCost) => {
-  return Number(cost) + prevAmount - newCost;
+const calcNewAmount = (cost, prevAmount, newCost, transaction_type) => {
+  if (transaction_type === "Expense") {
+    return Number(cost) + prevAmount - newCost;
+  } else if (transaction_type === "Income") {
+    return prevAmount - Number(cost) + newCost;
+  }
 };
 
 const edit = async (req, res) => {
@@ -37,11 +42,13 @@ const edit = async (req, res) => {
           "created_at",
           "cost",
           "icon_name",
+          "transaction_type",
         ]);
 
       //if the user changes cost
       if (newCost) {
-        const newAmount = calcNewAmount(cost, prevAmount, newCost);
+        const type = await typeSelector(user_id, id, trx);
+        const newAmount = calcNewAmount(cost, prevAmount, newCost, type);
         await upadateAmount(user_id, newAmount, trx);
       }
 
