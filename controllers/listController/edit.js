@@ -14,12 +14,6 @@ const edit = async (req, res) => {
   //get amount from db
   const prevAmount = await amountSelector(user_id, knex);
 
-  //check whether the amount is greater than or not
-  if (prevAmount < newCost) {
-    res.status(400).json({ error: "insufficient amount" });
-    return;
-  }
-
   knex.transaction(async (trx) => {
     try {
       //might slow performance

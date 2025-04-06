@@ -11,14 +11,9 @@ const create = async (req, res) => {
   //get amount from db
   const amount = await amountSelector(user_id, knex);
 
-  //check whether the amount is greater than or not
-  if (amount < cost) {
-    res.status(400).json({ error: "insufficient amount" });
-    return;
-  }
-
   knex.transaction(async (trx) => {
     try {
+      //TODO: need to do for income
       await upadateAmount(user_id, amount - cost, trx);
 
       //create new list
