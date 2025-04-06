@@ -6,16 +6,19 @@ const create = async (req, res) => {
   //get id from middleware
   const user_id = req.user;
 
-  const { categories, note, created_at, cost, icon_name } = req.body;
+  const { categories, note, created_at, cost, icon_name, transaction_type } =
+    req.body;
 
   //get amount from db
   const amount = await amountSelector(user_id, knex);
 
   knex.transaction(async (trx) => {
     try {
-      //TODO: need to do for income
-      await upadateAmount(user_id, amount - cost, trx);
-
+      if (transaction_type === "Expense") {
+        await upadateAmount(user_id, amount - cost, trx);
+      } else if (transaction_type === "Income") {
+        await upadateAmount(user_id, amount + cost, trx);
+      }
       //create new list
       const [data] = await trx("datas")
         .insert({
@@ -25,6 +28,7 @@ const create = async (req, res) => {
           cost: cost,
           user_id: user_id,
           icon_name: icon_name,
+          transaction_type: transaction_type,
         })
         .returning([
           "id",
@@ -33,6 +37,7 @@ const create = async (req, res) => {
           "created_at",
           "cost",
           "icon_name",
+          "transaction_type",
         ]);
 
       await trx.commit();
