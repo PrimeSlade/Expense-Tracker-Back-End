@@ -5,7 +5,15 @@ const displayList = async (req, res) => {
 
   try {
     const list = await knex
-      .select(["id", "categories", "note", "created_at", "cost", "icon_name"])
+      .select([
+        "id",
+        "categories",
+        "note",
+        "created_at",
+        "cost",
+        "icon_name",
+        "transaction_type",
+      ])
       .where({ user_id: user_id })
       .from("datas");
 

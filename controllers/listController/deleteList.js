@@ -1,6 +1,7 @@
 const knex = require("../../knex/knex");
 const amountSelector = require("../../utils/amountSelector");
 const upadateAmount = require("../../utils/upadateAmount");
+const typeSelector = require("../../utils/typeSelector");
 
 const deleteList = async (req, res) => {
   //get user id from middleware
@@ -10,6 +11,9 @@ const deleteList = async (req, res) => {
 
   knex.transaction(async (trx) => {
     try {
+      //get type from db
+      const type = await typeSelector(user_id, id, trx);
+
       //get amount from db
       const prevAmount = await amountSelector(user_id, trx);
       //del from datas
@@ -22,7 +26,11 @@ const deleteList = async (req, res) => {
         .returning("cost");
 
       //upadate amount
-      await upadateAmount(user_id, prevAmount + Number(cost), trx);
+      if (type === "Expense") {
+        await upadateAmount(user_id, prevAmount + Number(cost), trx);
+      } else if (type === "Income") {
+        await upadateAmount(user_id, prevAmount - Number(cost), trx);
+      }
 
       await trx.commit();
 
