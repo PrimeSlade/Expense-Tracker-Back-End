@@ -6,8 +6,7 @@ const create = async (req, res) => {
   //get id from middleware
   const user_id = req.user;
 
-  const { category, note, created_at, cost, icon_name, transaction_type } =
-    req.body;
+  const { category, note, created_at, cost, transaction_type } = req.body;
 
   //get amount from db
   const amount = await amountSelector(user_id, knex);
@@ -27,7 +26,6 @@ const create = async (req, res) => {
           created_at: created_at,
           cost: cost,
           user_id: user_id,
-          icon_name: icon_name,
           transaction_type: transaction_type,
         })
         .returning([
@@ -36,7 +34,6 @@ const create = async (req, res) => {
           "note",
           "created_at",
           "cost",
-          "icon_name",
           "transaction_type",
         ]);
 

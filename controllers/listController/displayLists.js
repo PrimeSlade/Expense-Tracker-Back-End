@@ -11,7 +11,6 @@ const displayList = async (req, res) => {
         "note",
         "created_at",
         "cost",
-        "icon_name",
         "transaction_type",
       ])
       .where({ user_id: user_id })
