@@ -13,7 +13,7 @@ const calcNewAmount = (cost, prevAmount, newCost, transaction_type) => {
 
 const edit = async (req, res) => {
   const user_id = req.user;
-  const { categories, note, created_at, newCost, icon_name } = req.body;
+  const { category, note, created_at, newCost, icon_name } = req.body;
   const id = parseInt(req.params.id);
 
   //get amount from db
@@ -29,7 +29,7 @@ const edit = async (req, res) => {
       const [data] = await trx("datas")
         .where({ user_id: user_id, id: id })
         .update({
-          categories: categories,
+          category: category,
           note: note,
           created_at: created_at,
           cost: newCost,
@@ -37,7 +37,7 @@ const edit = async (req, res) => {
         })
         .returning([
           "id",
-          "categories",
+          "category",
           "note",
           "created_at",
           "cost",

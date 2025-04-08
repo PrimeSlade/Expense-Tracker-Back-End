@@ -7,7 +7,7 @@ const displayList = async (req, res) => {
     const list = await knex
       .select([
         "id",
-        "categories",
+        "category",
         "note",
         "created_at",
         "cost",

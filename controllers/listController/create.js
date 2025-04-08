@@ -6,7 +6,7 @@ const create = async (req, res) => {
   //get id from middleware
   const user_id = req.user;
 
-  const { categories, note, created_at, cost, icon_name, transaction_type } =
+  const { category, note, created_at, cost, icon_name, transaction_type } =
     req.body;
 
   //get amount from db
@@ -22,7 +22,7 @@ const create = async (req, res) => {
       //create new list
       const [data] = await trx("datas")
         .insert({
-          categories: categories,
+          category: category,
           note: note,
           created_at: created_at,
           cost: cost,
@@ -32,7 +32,7 @@ const create = async (req, res) => {
         })
         .returning([
           "id",
-          "categories",
+          "category",
           "note",
           "created_at",
           "cost",
