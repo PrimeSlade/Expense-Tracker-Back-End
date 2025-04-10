@@ -13,7 +13,7 @@ const calcNewAmount = (cost, prevAmount, newCost, transaction_type) => {
 
 const edit = async (req, res) => {
   const user_id = req.user;
-  const { category, note, created_at, newCost } = req.body;
+  const { category, note, created_at, newCost, transaction_type } = req.body;
   const id = parseInt(req.params.id);
 
   //get amount from db
@@ -33,6 +33,7 @@ const edit = async (req, res) => {
           note: note,
           created_at: created_at,
           cost: newCost,
+          transaction_type: transaction_type,
         })
         .returning([
           "id",
