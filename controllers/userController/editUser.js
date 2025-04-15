@@ -20,7 +20,7 @@ module.exports.info = async (req, res) => {
         name: name,
         email: email,
       })
-      .returning(["name", "email", "amount", "currency"]);
+      .returning(["email", "id", "img_url", "name", "currency "]);
 
     if (user) {
       res.cookie("jwt", "", { maxAge: 1 });
@@ -36,20 +36,25 @@ module.exports.info = async (req, res) => {
 module.exports.password = async (req, res) => {
   const user_id = req.user;
 
-  const { password } = req.body;
-
-  //check if the password len is at least 6
-  if (password.length < 6) {
-    return res
-      .status(400)
-      .json({ error: "Password length must be over 6 or at least 6" });
-  }
+  const { oldPassword, newPassword } = req.body;
 
   //salt
   const salt = await bcrypt.genSalt();
-  const hash = await bcrypt.hash(password, salt);
+  const hash = await bcrypt.hash(newPassword, salt);
 
   try {
+    //check if whether the pass is correct or not
+    const [userPassword] = await knex
+      .select("hash")
+      .from("passwords")
+      .where({ user_id: user.id });
+    const isValid = bcrypt.compareSync(oldPassword, userPassword.hash);
+
+    if (!isValid) {
+      res.json.status(400).json({ error: "Password does not match!" });
+      return;
+    }
+
     const [pass] = await knex("passwords")
       .where({ user_id: user_id })
       .update({
