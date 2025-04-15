@@ -6,8 +6,8 @@ const logout = require("../controllers/authController/logout");
 //activate route
 const route = Router();
 
-route.post("/signup", register);
-route.post("/login", login);
-route.post("/logout", logout);
+route.post("/api/auth/signup", register);
+route.post("/api/auth/login", login);
+route.post("/api/auth/logout", logout);
 
 module.exports = route;

@@ -26,7 +26,7 @@ module.exports.info = async (req, res) => {
       res.cookie("jwt", "", { maxAge: 1 });
     }
 
-    res.status(200).json(user);
+    res.status(200).json("Your info has been changed");
   } catch (error) {
     console.error(error);
     res.status(400).json({ error: "Could not change user info" });
@@ -47,11 +47,11 @@ module.exports.password = async (req, res) => {
     const [userPassword] = await knex
       .select("hash")
       .from("passwords")
-      .where({ user_id: user.id });
+      .where({ user_id: user_id });
     const isValid = bcrypt.compareSync(oldPassword, userPassword.hash);
 
     if (!isValid) {
-      res.json.status(400).json({ error: "Password does not match!" });
+      res.status(400).json({ error: "Password does not match!" });
       return;
     }
 
