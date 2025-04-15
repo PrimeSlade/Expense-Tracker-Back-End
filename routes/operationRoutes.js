@@ -26,14 +26,19 @@ const upload = multer({ storage });
 //use auth middle in every route
 operationRoute.use(requireAuth);
 
-operationRoute.post("/create", create);
-operationRoute.delete("/lists/:id", deleteList);
-operationRoute.put("/lists/:id", edit);
-operationRoute.put("/user", editUser.info);
-operationRoute.put("/password", editUser.password);
-operationRoute.get("/lists", displayLists);
-operationRoute.patch("/currency", editCurrency);
-operationRoute.patch("/amount", addAmount);
-operationRoute.post("/upload", upload.single("img"), validateFile, uploadImg);
+operationRoute.post("/lists/create", create);
+operationRoute.delete("/lists/remove/:id", deleteList);
+operationRoute.put("/lists/update/:id", edit);
+operationRoute.put("/user/update", editUser.info);
+operationRoute.put("/user/password", editUser.password);
+operationRoute.get("/lists/view", displayLists);
+operationRoute.patch("/user/currency/update", editCurrency);
+operationRoute.patch("/user/amount/add", addAmount);
+operationRoute.post(
+  "/user/profile/upload",
+  upload.single("img"),
+  validateFile,
+  uploadImg
+);
 
 module.exports = operationRoute;
