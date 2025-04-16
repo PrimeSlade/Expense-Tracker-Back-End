@@ -5,7 +5,7 @@ const upadateAmount = require("../../utils/upadateAmount.js");
 
 //for converting
 const convert = (prevAmount, fromRate, toRate) => {
-  return Math.round((prevAmount / fromRate) * toRate); //TODO: need to check later
+  return Math.round((prevAmount / fromRate) * toRate);
 };
 
 const editCurrency = async (req, res) => {
