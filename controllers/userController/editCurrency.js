@@ -4,8 +4,8 @@ const amountSelector = require("../../utils/amountSelector.js");
 const upadateAmount = require("../../utils/upadateAmount.js");
 
 //for converting
-const convert = (prevAmount, rate) => {
-  return Math.round(prevAmount * rate); //TODO: need to check later
+const convert = (prevAmount, fromRate, toRate) => {
+  return Math.round((prevAmount / fromRate) * toRate); //TODO: need to check later
 };
 
 const editCurrency = async (req, res) => {
@@ -21,7 +21,7 @@ const editCurrency = async (req, res) => {
 
     //fetch currency api
     const response = await fetch(
-      `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/${currency}`
+      `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/THB`
     );
     const { conversion_rates } = await response.json();
 
@@ -37,15 +37,23 @@ const editCurrency = async (req, res) => {
         const prevAmount = await amountSelector(user_id, trx);
 
         //updating user
-        const newAmount = convert(prevAmount, conversion_rates[newCurrency]);
+        const newAmount = convert(
+          prevAmount,
+          conversion_rates[currency],
+          conversion_rates[newCurrency]
+        );
 
-        await upadateAmount(user_id, newAmount, trx, newCurrency);
+        const user = await upadateAmount(user_id, newAmount, trx, newCurrency);
 
         //updating datas
         await Promise.all(
           list.map(async (l) => {
             const newMoney = Number(l.cost);
-            const newCost = convert(newMoney, conversion_rates[newCurrency]);
+            const newCost = convert(
+              newMoney,
+              conversion_rates[currency],
+              conversion_rates[newCurrency]
+            );
 
             await trx("datas").where({ id: l.id }).update({
               cost: newCost,
@@ -54,7 +62,7 @@ const editCurrency = async (req, res) => {
         );
 
         await trx.commit();
-        res.status(200).json("successful");
+        res.status(200).json(user);
       } catch (error) {
         await trx.rollback();
         console.error(error);

@@ -6,7 +6,7 @@ const upadateAmount = async (user_id, amount, knex, currency) => {
         amount: amount,
         currency: currency,
       })
-      .returning(["name", "email", "amount", "currency"]);
+      .returning(["email", "id", "img_url", "name", "currency "]);
 
     return user;
   } catch (error) {
