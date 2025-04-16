@@ -38,7 +38,7 @@ const create = async (req, res) => {
         ]);
 
       await trx.commit();
-      res.json(data);
+      res.status(200).json(data);
     } catch (error) {
       await trx.rollback();
       console.error(error);

@@ -10,6 +10,7 @@ const addAmount = require("../controllers/userController/addAmount");
 const uploadImg = require("../controllers/userController/uploadHandler");
 const multer = require("multer");
 const validateFile = require("../middleware/validateFile");
+const amount = require("../controllers/authController/amount");
 
 const operationRoute = Router();
 
@@ -34,6 +35,7 @@ operationRoute.put("/user/password", editUser.password);
 operationRoute.get("/lists/view", displayLists);
 operationRoute.patch("/user/currency/update", editCurrency);
 operationRoute.patch("/user/amount/add", addAmount);
+operationRoute.get("/user/amount", amount);
 operationRoute.post(
   "/user/profile/upload",
   upload.single("img"),
