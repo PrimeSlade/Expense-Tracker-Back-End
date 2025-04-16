@@ -35,7 +35,7 @@ const uploadHandler = async (req, res) => {
     fs.unlinkSync(filePath);
 
     //insert
-    const [{ img_url }] = await knex("users")
+    const [user] = await knex("users")
       .update({
         img_url: result.secure_url,
         public_id: result.public_id,
@@ -43,9 +43,9 @@ const uploadHandler = async (req, res) => {
       .where({
         id: id,
       })
-      .returning("img_url");
+      .returning(["email", "id", "img_url", "name", "currency "]);
 
-    res.status(200).json(img_url);
+    res.status(200).json(user);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error });
