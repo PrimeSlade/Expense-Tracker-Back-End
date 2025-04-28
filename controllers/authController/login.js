@@ -1,11 +1,10 @@
 const knex = require("../../knex/knex");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
-//create token
-const createToken = (id) => {
-  return jwt.sign({ id }, process.env.SECRETEKEY, { expiresIn: "3d" });
-};
+const {
+  createAccessToken,
+  createRefreshToken,
+} = require("../../utils/tokenGenerator");
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -29,16 +28,18 @@ const login = async (req, res) => {
     if (!isValid)
       return res.status(400).json({ error: "password is incorrect !!!" });
 
-    const token = createToken(user.id);
+    //create tokens
+    const refreshToken = createRefreshToken(user.id);
+    const accessToken = createAccessToken(user.id);
 
     //send cookie
-    res.cookie("jwt", token, {
+    res.cookie("jwt", refreshToken, {
       httpOnly: true,
       secure: false,
-      maxAge: 3 * 24 * 60 * 60 * 1000,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.json(user);
+    res.json({ ...user, accessToken });
   } catch (error) {
     console.log(error);
   }
