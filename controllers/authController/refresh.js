@@ -27,9 +27,7 @@ const refresh = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    console.log("refersh");
-
-    res.json(accessToken);
+    res.json({ accessToken });
   } catch (error) {
     console.log(error);
     res.status(401).json({ error: "Request is not authorized" });
