@@ -6,8 +6,7 @@ const requireAuth = async (req, res, next) => {
   //get token from cookie
   const token = req.headers["authorization"]?.split(" ")[1];
 
-  if (!token)
-    return res.status(401).json({ error: "Authenticaion token requried" });
+  if (!token) return;
 
   try {
     //verify that jwt is valid or not
