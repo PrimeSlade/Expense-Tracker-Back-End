@@ -27,6 +27,7 @@ const requireAuth = async (req, res, next) => {
 
     next();
   } catch (error) {
+    console.log("been there");
     console.log(error);
     res.status(401).json({ error: "Access token is not authorized" });
   }
